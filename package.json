@@ -1,0 +1,72 @@
+{
+  "name": "<NAME>",
+  "version": "1.0.0",
+  "description": "<DESCRIPTION>",
+  "author": "STRDcoders",
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "<REPOURL>"
+  },
+  "scripts": {
+    "build": "tsc -sourcemap -p ./tsconfig.json",
+    "run": "node -r source-map-support/register dist/src/main.js",
+    "start": "npm run build && npm run run",
+    "test": "nyc mocha -r ts-node/register test/**/*.spec.ts --exit",
+    "lint": "eslint \"./{src,test}/**/*.ts\""
+  },
+  "keywords": [],
+  "dependencies": {
+    "amqplib": "^0.8.0",
+    "express": "^4.17.1",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^10.4.0",
+    "winston": "3.3.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.5.16",
+    "@types/chai-as-promised": "^7.1.4",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
+    "eslint": "^7.14.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-chai-friendly": "^0.6.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.8",
+    "husky": "^4.3.0",
+    "mocha": "^9.2.0",
+    "prettier": "2.2.1",
+    "pretty-quick": "^3.1.0",
+    "sinon": "^9.2.1",
+    "sinon-chai": "^3.5.0",
+    "swagger-jsdoc": "^5.0.1",
+    "typescript": "^4.1.2"
+  },
+  "nyc": {
+    "include": [
+      "**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
