@@ -92,6 +92,7 @@ export class TelegramBotService {
         } else {
           message += `Downloading(${item.estimatedCompletionTime} remaining)`;
         }
+        await ctx.reply(message);
       }
     } else {
       await ctx.reply(`No items in download queue`);
