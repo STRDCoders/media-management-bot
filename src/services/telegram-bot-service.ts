@@ -85,15 +85,17 @@ export class TelegramBotService {
     const media = await this.radarrMediaService.getDownloadQueue();
     if (media.length > 0) {
       await ctx.reply(`Download queue:`);
+      let message = "";
       for (const item of media) {
-        let message = `${item.name} - `;
+        message += Constants.bot.responses.queue.description(item.name);
         if (item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok) {
           message += Constants.bot.responses.queue.warning;
         } else {
-          message += `Downloading(${item.estimatedCompletionTime} remaining)`;
+          message += Constants.bot.responses.queue.downloading(item.estimatedCompletionTime);
         }
-        await ctx.reply(message);
+        message += "\n";
       }
+      await ctx.reply(message);
     } else {
       await ctx.reply(`No items in download queue`);
     }

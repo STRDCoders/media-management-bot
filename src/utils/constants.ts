@@ -10,7 +10,9 @@ export class Constants {
   static readonly bot = Object.freeze({
     responses: Object.freeze({
       queue: Object.freeze({
-        warning: "⚠️ Please contact admin for further details",
+        description: (title: string) => `${title} - `,
+        warning: "⚠️ Contact admin",
+        downloading: (remainingTime: string) => `📥 Downloading(${remainingTime} remaining)`,
       }),
     }),
   });
