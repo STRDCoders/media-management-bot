@@ -84,7 +84,6 @@ export class TelegramBotService {
     logger.info(`User ${ctx.from?.id} requested the download queue`);
     const media = await this.radarrMediaService.getDownloadQueue();
     if (media.length > 0) {
-      await ctx.reply(`Download queue:`);
       let message = "";
       for (const item of media) {
         message += Constants.bot.responses.queue.description(item.name);
