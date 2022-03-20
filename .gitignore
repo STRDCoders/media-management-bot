@@ -53,3 +53,4 @@ test-results.xml
 
 dist
 swagger.json
+.nyc_output/
