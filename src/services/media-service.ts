@@ -10,13 +10,13 @@ export interface MediaDownloadQueueItem {
 }
 
 export enum MediaDownloadQueueItemClientStatus { // status for radarr
-  paused = "Paused",
-  downloading = "Downloading",
-  completed = "Completed",
+  paused = "paused",
+  downloading = "downloading",
+  completed = "completed",
 }
 
 export enum MediaDownloadQueueItemTrackedStatus { // trackedDownloadStatus for radarr
-  warning = "Warning",
-  ok = "Ok",
-  error = "Error",
+  warning = "warning",
+  ok = "ok",
+  error = "error",
 }

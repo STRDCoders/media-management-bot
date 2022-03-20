@@ -2,7 +2,9 @@ import winston, { Logger } from "winston";
 import { TransformableInfo } from "logform";
 
 export class LoggerFactory {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   public static INFO: string = "info";
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   public static DEBUG: string = "debug";
 
   public static getLogger(loggerName: string, logLevel: string = this.DEBUG): Logger {
