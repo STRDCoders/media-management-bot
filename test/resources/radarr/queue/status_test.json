@@ -1,0 +1,53 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "timeleft",
+  "sortDirection": "ascending",
+  "totalRecords": 2,
+  "records": [
+    {
+      "movieId": 1,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "TEST_NAME",
+          "source": "TEST_SOURCE",
+          "resolution": 2160,
+          "modifier": "TEST_MODIFIER"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [],
+      "size": 13490787011,
+      "title": "Working.Finally.1.2160p",
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "estimatedCompletionTime": "2022-03-09T12:51:07Z",
+      "status": "{{status}}",
+      "trackedDownloadStatus": "{{trackedDownloadStatus}}",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "TEST_TITLE",
+          "messages": ["Unable to parse file"]
+        }
+      ],
+      "downloadId": "TEST_DOWNLOAD_ID",
+      "protocol": "TEST_PROTOCOL",
+      "downloadClient": "TEST_DOWNLOAD_CLIENT",
+      "indexer": "TEST",
+      "outputPath": "TEST",
+      "id": 1
+    }
+  ]
+}

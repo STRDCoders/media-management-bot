@@ -32,7 +32,6 @@ export class RadarrWebClient implements MediaWebClient {
     return response.data.records.map(
       (queueRecord: RadarrQueueRecord) =>
         <MediaDownloadQueueItem>{
-          title: queueRecord.title,
           clientStatus: queueRecord.status,
           trackedStatus: queueRecord.trackedDownloadStatus,
           estimatedCompletionTime: queueRecord.timeleft,
