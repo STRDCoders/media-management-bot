@@ -10,14 +10,6 @@ const expect = chai.expect;
 
 describe("Web client", () => {
   describe("Configuration", () => {
-    beforeEach(() => {
-      process.env.BOT_TOKEN = "bot_token";
-      process.env.RADARR_API_KEY = "radarr_api_key";
-      process.env.RADARR_HOST = "radarr_host";
-      process.env.SONARR_API_KEY = "sonarr_api_key";
-      process.env.SONARR_HOST = "sonarr_host";
-    });
-
     describe("Radarr", () => {
       let sandbox: SinonSandbox;
 

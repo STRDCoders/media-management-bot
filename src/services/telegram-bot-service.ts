@@ -9,7 +9,10 @@ const logger: Logger = LoggerFactory.getLogger("bot-service");
 
 export type BasicContext = Context & SessionFlavor<SessionData>;
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+export enum Routes {
+  queue = "/queue",
+}
+
 export enum SessionStateType {
   none = "none",
 }
@@ -23,19 +26,18 @@ function initial(): SessionData {
 }
 
 export class TelegramBotService {
-  private bot: Bot<BasicContext>;
-
-  constructor(private radarrMediaService: RadarrMediaService) {
-    this.bot = new Bot(Constants.botToken);
+  constructor(
+    private radarrMediaService: RadarrMediaService,
+    private bot: Bot<BasicContext> = new Bot(Constants.botToken)
+  ) {
     this.initBotMiddleware();
     this.initBotCommands();
     this.bot.api.setMyCommands([
       {
-        command: "queue",
+        command: Routes.queue,
         description: "Download queue",
       },
     ]);
-
     this.bot.start();
   }
 
@@ -62,18 +64,24 @@ export class TelegramBotService {
     }
     return await next();
   }
+
   private initBotMiddleware() {
     // Initial global middleware for bot
     this.bot.use(session({ initial }));
     this.bot.catch(async (errorHandler) => await this.handleError(errorHandler));
-    this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleGuard(ctx, next));
     this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleDebugLogging(ctx, next));
+    this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleGuard(ctx, next));
     this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleSessionState(ctx, next));
   }
 
   private initBotCommands() {
-    this.bot.command("queue", async (ctx: BasicContext, next: Function) => await this.handleQueueRequest(ctx, next));
+    this.bot.hears(Routes.queue, async (ctx: BasicContext, next: Function) => await this.handleQueueRequest(ctx, next));
   }
+
+  private test = async (ctx: BasicContext, next: Function) => {
+    await ctx.reply("test");
+    return await next();
+  };
 
   private handleError = async (errorHandler: BotError<BasicContext>) => {
     logger.error(`Error occurred: ${errorHandler.error}`);
