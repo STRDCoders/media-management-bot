@@ -13,12 +13,13 @@
     "build": "tsc -sourcemap -p ./tsconfig.json",
     "run": "node -r source-map-support/register dist/src/main.js",
     "start": "npm run build && npm run run",
-    "test": "nyc mocha -r ts-node/register test/**/*.spec.ts --exit",
+    "test": "nyc mocha -r ts-node/register -r dotenv/config test/**/*.spec.ts dotenv_config_path=./test/resources/.env.test --exit",
     "lint": "eslint \"./{src,test}/**/*.ts\""
   },
   "keywords": [],
   "dependencies": {
     "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "grammy": "^1.7.0",
     "nyc": "^15.1.0",

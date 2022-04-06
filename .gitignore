@@ -48,7 +48,7 @@ typings/
 .DS_Store
 *.iml
 
-.env
+test/resources/.env.test
 test-results.xml
 
 dist
