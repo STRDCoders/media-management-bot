@@ -85,26 +85,25 @@ export class TelegramBotService {
 
   private handleError = async (errorHandler: BotError<BasicContext>) => {
     logger.error(`Error occurred: ${errorHandler.error}`);
-    await errorHandler.ctx.reply("An error occurred. Please try again later.");
+    await errorHandler.ctx.reply(Constants.bot.responses.error);
   };
 
   private async handleQueueRequest(ctx: BasicContext, next: Function) {
     logger.info(`User ${ctx.from?.id} requested the download queue`);
     const media = await this.radarrMediaService.getDownloadQueue();
     if (media.length > 0) {
-      let message = "";
+      const messages: string[] = [];
       for (const item of media) {
-        message += Constants.bot.responses.queue.description(item.name);
-        if (item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok) {
-          message += Constants.bot.responses.queue.warning;
-        } else {
-          message += Constants.bot.responses.queue.downloading(item.estimatedCompletionTime);
-        }
-        message += "\n";
+        const message: string = `${Constants.bot.responses.queue.description(item.name)}${
+          item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok
+            ? Constants.bot.responses.queue.warning
+            : Constants.bot.responses.queue.downloading(item.estimatedCompletionTime)
+        }`;
+        messages.push(message);
       }
-      await ctx.reply(message);
+      await ctx.reply(messages.join("\n"));
     } else {
-      await ctx.reply(`No items in download queue`);
+      await ctx.reply(Constants.bot.responses.queue.noItems);
     }
     return await next();
   }

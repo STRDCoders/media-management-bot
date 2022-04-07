@@ -9,7 +9,9 @@ export class Constants {
 
   static readonly bot = Object.freeze({
     responses: Object.freeze({
+      error: "An error occurred. Please try again later.",
       queue: Object.freeze({
+        noItems: "No items in download queue",
         description: (title: string) => `${title} - `,
         warning: "⚠️ Contact admin",
         downloading: (remainingTime: string) => `📥 Downloading(${remainingTime} remaining)`,

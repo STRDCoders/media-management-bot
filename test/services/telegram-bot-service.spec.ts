@@ -12,6 +12,10 @@ import { Constants } from "../../src/utils/constants";
 import * as https from "https";
 import { UserFromGetMe } from "grammy/out/platform.node";
 import { TestUtils } from "../utils/test-utils";
+import {
+  MediaDownloadQueueItemClientStatus,
+  MediaDownloadQueueItemTrackedStatus,
+} from "../../src/services/media-service";
 
 chai.use(chaiAsPromised);
 chai.use(require("sinon-chai"));
@@ -115,6 +119,61 @@ describe("Bot service", () => {
         expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
         expect(actualMessage.payload.text).to.equal(expectedMessage);
       });
+
+      describe("tracked status is ok", () => {
+        Object.values(MediaDownloadQueueItemClientStatus).forEach((clientStatus: MediaDownloadQueueItemClientStatus) =>
+          it(`when tracked status is ok and the media status is: ${clientStatus}, should send the correct message`, async () => {
+            const message = generateMessage("/queue", validUserId);
+            const response = TestUtils.readResourceFile("radarr/queue/status_test");
+            const [mediaRecord] = response.records;
+            mediaRecord.status = clientStatus;
+            mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
+            mediaRecord.trackedDownloadStatus = "ok";
+            mediaRecord.timeleft =
+              Math.floor(Math.random() * 60) +
+              ":" +
+              Math.floor(Math.random() * 60) +
+              ":" +
+              Math.floor(Math.random() * 60);
+
+            mockHttpClientGetStub.resolves({ data: response });
+
+            await bot.handleUpdate(message);
+            const actualMessage = outgoingRequests.pop();
+            expect(actualMessage.method).to.equal("sendMessage");
+            expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
+            expect(actualMessage.payload.text).to.equal(
+              `${mediaRecord.title} - 📥 Downloading(${mediaRecord.timeleft} remaining)`
+            );
+          })
+        );
+      });
+
+      Object.values(MediaDownloadQueueItemTrackedStatus)
+        .filter((it) => it !== MediaDownloadQueueItemTrackedStatus.ok)
+        .forEach((trackedStatus: MediaDownloadQueueItemTrackedStatus) =>
+          describe(`tracked status is ${trackedStatus}`, () => {
+            Object.values(MediaDownloadQueueItemClientStatus).forEach(
+              (clientStatus: MediaDownloadQueueItemClientStatus) =>
+                it(`when tracked status ${trackedStatus} and the media status is: ${clientStatus}, should send the correct message`, async () => {
+                  const message = generateMessage("/queue", validUserId);
+                  const response = TestUtils.readResourceFile("radarr/queue/status_test");
+                  const [mediaRecord] = response.records;
+                  mediaRecord.status = clientStatus;
+                  mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
+                  mediaRecord.trackedDownloadStatus = trackedStatus;
+
+                  mockHttpClientGetStub.resolves({ data: response });
+
+                  await bot.handleUpdate(message);
+                  const actualMessage = outgoingRequests.pop();
+                  expect(actualMessage.method).to.equal("sendMessage");
+                  expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
+                  expect(actualMessage.payload.text).to.equal(`${mediaRecord.title} - ⚠️ Contact admin`);
+                })
+            );
+          })
+        );
     });
   });
 });
