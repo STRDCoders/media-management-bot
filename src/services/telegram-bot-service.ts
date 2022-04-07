@@ -78,18 +78,13 @@ export class TelegramBotService {
     this.bot.hears(Routes.queue, async (ctx: BasicContext, next: Function) => await this.handleQueueRequest(ctx, next));
   }
 
-  private test = async (ctx: BasicContext, next: Function) => {
-    await ctx.reply("test");
-    return await next();
-  };
-
   private handleError = async (errorHandler: BotError<BasicContext>) => {
     logger.error(`Error occurred: ${errorHandler.error}`);
     await errorHandler.ctx.reply(Constants.bot.responses.error);
   };
 
   private async handleQueueRequest(ctx: BasicContext, next: Function) {
-    logger.info(`User ${ctx.from?.id} requested the download queue`);
+    logger.info(`User ${ctx.chat!!.id} requested the download queue`);
     const media = await this.radarrMediaService.getDownloadQueue();
     if (media.length > 0) {
       const messages: string[] = [];
