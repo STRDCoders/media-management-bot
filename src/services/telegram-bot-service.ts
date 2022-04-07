@@ -55,23 +55,12 @@ export class TelegramBotService {
     logger.error(`User ${ctx.from?.id} is not authorized`);
   }
 
-  private static async handleSessionState(ctx: BasicContext, next: Function) {
-    // In case the user switches a menu, we want to ignore state requests since they are not relevant & in some cases will cause the menu to re-appear
-    if (!!ctx.callbackQuery?.data) {
-      return await next();
-    }
-    switch (ctx.session.currentState) {
-    }
-    return await next();
-  }
-
   private initBotMiddleware() {
     // Initial global middleware for bot
     this.bot.use(session({ initial }));
     this.bot.catch(async (errorHandler) => await this.handleError(errorHandler));
     this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleDebugLogging(ctx, next));
     this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleGuard(ctx, next));
-    this.bot.use(async (ctx: BasicContext, next: Function) => await TelegramBotService.handleSessionState(ctx, next));
   }
 
   private initBotCommands() {
