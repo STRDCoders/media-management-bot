@@ -93,7 +93,9 @@ describe("Bot service", () => {
   describe("User validation", () => {
     Object.values(Routes).forEach((route) => {
       it(`should send nothing on '${route}' request if user is not in the allowed users list`, async () => {
-        await bot.handleUpdate(generateMessage(`/${route}`));
+        const handleRequestsSpy = sandbox.spy(botService as any, "handleRequests");
+        await bot.handleUpdate(generateMessage(route));
+        expect(handleRequestsSpy).to.not.have.been.called;
       });
     });
   });

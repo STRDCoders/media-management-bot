@@ -64,13 +64,26 @@ export class TelegramBotService {
   }
 
   private initBotCommands() {
-    this.bot.hears(Routes.queue, async (ctx: BasicContext, next: Function) => await this.handleQueueRequest(ctx, next));
+    this.bot.hears(
+      Routes.queue,
+      async (ctx: BasicContext, next: Function) => await this.handleRequests(Routes.queue, ctx, next)
+    );
   }
 
   private handleError = async (errorHandler: BotError<BasicContext>) => {
     logger.error(`Error occurred: ${errorHandler.error}`);
     await errorHandler.ctx.reply(Constants.bot.responses.error);
   };
+
+  private async handleRequests(route: Routes, ctx: BasicContext, next: Function) {
+    // This method is called for every command, more for testing purposes of security
+    switch (route) {
+      case Routes.queue:
+        return await this.handleQueueRequest(ctx, next);
+      default:
+        return;
+    }
+  }
 
   private async handleQueueRequest(ctx: BasicContext, next: Function) {
     logger.info(`User ${ctx.chat!!.id} requested the download queue`);
