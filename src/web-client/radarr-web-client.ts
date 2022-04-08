@@ -42,7 +42,7 @@ export class RadarrWebClient implements MediaWebClient {
 }
 
 // Create a type for the "records" property objects from Radarr API request of "/queue"
-export interface RadarrQueueRecord {
+interface RadarrQueueRecord {
   title: string;
   timeleft: string;
   status: MediaDownloadQueueItemClientStatus;
