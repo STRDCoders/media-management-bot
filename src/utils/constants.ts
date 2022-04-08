@@ -2,6 +2,7 @@ export interface MediaServerLogin {
   readonly host: string;
   readonly apiKey: string;
   readonly basePath: string;
+  readonly queuePageSize: number;
 }
 
 export class Constants {
@@ -22,11 +23,17 @@ export class Constants {
     host: process.env.SONARR_HOST!!,
     basePath: "/api/v3",
     apiKey: process.env.SONARR_API_KEY!!,
+    queuePageSize: Number.isInteger(parseInt(process.env.QUEUE_SIZE!!, 10))
+      ? parseInt(process.env.QUEUE_SIZE!!, 10)
+      : 100,
   });
   static readonly radarr: MediaServerLogin = Object.freeze({
     host: process.env.RADARR_HOST!!,
     basePath: "/api/v3",
     apiKey: process.env.RADARR_API_KEY!!,
+    queuePageSize: Number.isInteger(parseInt(process.env.QUEUE_SIZE!!, 10))
+      ? parseInt(process.env.QUEUE_SIZE!!, 10)
+      : 100,
   });
   static readonly allowedUsers: string[] = process.env.ALLOWED_USERS?.split(",") || [];
 }
