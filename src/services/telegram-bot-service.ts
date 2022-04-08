@@ -4,6 +4,7 @@ import { Constants } from "../utils/constants";
 import { Bot, BotError, Context, session, SessionFlavor } from "grammy";
 import { RadarrMediaService } from "./radarr-media-service";
 import { MediaDownloadQueueItemTrackedStatus } from "./media-service";
+import { SonarrMediaService } from "./sonarr-media-service";
 
 const logger: Logger = LoggerFactory.getLogger("bot-service");
 
@@ -28,6 +29,7 @@ function initial(): SessionData {
 export class TelegramBotService {
   constructor(
     private radarrMediaService: RadarrMediaService,
+    private sonarrMediaService: SonarrMediaService,
     private bot: Bot<BasicContext> = new Bot(Constants.botToken)
   ) {
     this.initBotMiddleware();
@@ -85,10 +87,13 @@ export class TelegramBotService {
 
   private async handleQueueRequest(ctx: BasicContext, next: Function) {
     logger.info(`User ${ctx.chat!!.id} requested the download queue`);
-    const media = await this.radarrMediaService.getDownloadQueue();
-    if (media.length > 0) {
+    const radarrQueue = await this.radarrMediaService.getDownloadQueue();
+    const sonarrQueue = await this.sonarrMediaService.getDownloadQueue();
+    const combinedQueue = radarrQueue.concat(sonarrQueue);
+
+    if (combinedQueue.length > 0) {
       const messages: string[] = [];
-      for (const item of media) {
+      for (const item of combinedQueue) {
         const message: string = `${Constants.bot.responses.queue.description(item.name)}${
           item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok
             ? Constants.bot.responses.queue.warning
