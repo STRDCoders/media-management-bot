@@ -32,7 +32,7 @@ describe("Bot service", () => {
   let mockHttpClient;
   let mockHttpClientGetStub: SinonStub;
 
-  const generateMessage = (message: string, uid: number = 11111): Update => ({
+  const generateMessage = (message: string, uid: number = Math.floor(Math.random() * 1000000)): Update => ({
     update_id: Math.floor(Math.random() * 1000000),
     message: {
       message_id: Math.floor(Math.random() * 1000000),
@@ -52,7 +52,7 @@ describe("Bot service", () => {
   });
 
   beforeEach(async () => {
-    bot = new Bot("token");
+    bot = new Bot(Constants.botToken);
     bot.api.config.use((prev, method, payload, signal) => {
       if (!["setMyCommands", "setMyCommands", "deleteWebhook", "getUpdates"].includes(method)) {
         outgoingRequests.push({ method, payload, signal });
@@ -108,6 +108,23 @@ describe("Bot service", () => {
     });
 
     describe("/queue", () => {
+      const buildQueueItemsResponse = (
+        trackedStatus: string = "ok",
+        clientStatus: MediaDownloadQueueItemClientStatus = Object.values(MediaDownloadQueueItemClientStatus)[
+          Math.floor(Math.random() * Object.values(MediaDownloadQueueItemClientStatus).length)
+        ]
+      ) => {
+        const response = TestUtils.readResourceFile("radarr/queue/status_test");
+        const [mediaRecord] = response.records;
+        mediaRecord.status = clientStatus;
+        mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
+        mediaRecord.trackedDownloadStatus = trackedStatus;
+        mediaRecord.timeleft =
+          Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60);
+
+        return response;
+      };
+
       it("when no items found, should send the correct message", async () => {
         const message = generateMessage("/queue", validUserId);
         const expectedMessage = "No items in download queue";
@@ -126,17 +143,8 @@ describe("Bot service", () => {
         Object.values(MediaDownloadQueueItemClientStatus).forEach((clientStatus: MediaDownloadQueueItemClientStatus) =>
           it(`when tracked status is ok and the media status is: ${clientStatus}, should send the correct message`, async () => {
             const message = generateMessage("/queue", validUserId);
-            const response = TestUtils.readResourceFile("radarr/queue/status_test");
+            const response = buildQueueItemsResponse("ok", clientStatus);
             const [mediaRecord] = response.records;
-            mediaRecord.status = clientStatus;
-            mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
-            mediaRecord.trackedDownloadStatus = "ok";
-            mediaRecord.timeleft =
-              Math.floor(Math.random() * 60) +
-              ":" +
-              Math.floor(Math.random() * 60) +
-              ":" +
-              Math.floor(Math.random() * 60);
 
             mockHttpClientGetStub.resolves({ data: response });
 
@@ -159,11 +167,8 @@ describe("Bot service", () => {
               (clientStatus: MediaDownloadQueueItemClientStatus) =>
                 it(`when tracked status ${trackedStatus} and the media status is: ${clientStatus}, should send the correct message`, async () => {
                   const message = generateMessage("/queue", validUserId);
-                  const response = TestUtils.readResourceFile("radarr/queue/status_test");
+                  const response = buildQueueItemsResponse(trackedStatus, clientStatus);
                   const [mediaRecord] = response.records;
-                  mediaRecord.status = clientStatus;
-                  mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
-                  mediaRecord.trackedDownloadStatus = trackedStatus;
 
                   mockHttpClientGetStub.resolves({ data: response });
 
@@ -176,17 +181,11 @@ describe("Bot service", () => {
             );
           })
         );
+
       it("when several items in queue, should separate them with a new line", async () => {
         const message = generateMessage("/queue", validUserId);
-        const response = TestUtils.readResourceFile("radarr/queue/status_test");
+        const response = buildQueueItemsResponse();
         const [mediaRecord] = response.records;
-        mediaRecord.status = Object.values(MediaDownloadQueueItemClientStatus)[
-          Math.floor(Math.random() * Object.values(MediaDownloadQueueItemClientStatus).length)
-        ];
-        mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
-        mediaRecord.trackedDownloadStatus = "ok";
-        mediaRecord.timeleft =
-          Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60);
         response.records.push(mediaRecord);
 
         mockHttpClientGetStub.resolves({ data: response });
