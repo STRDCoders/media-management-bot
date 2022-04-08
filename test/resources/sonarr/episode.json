@@ -1,0 +1,38 @@
+[
+  {
+    "seriesId": 160,
+    "episodeFileId": 11026,
+    "seasonNumber": 4,
+    "episodeNumber": 1,
+    "title": "episode title",
+    "airDate": "2009-02-13",
+    "airDateUtc": "2009-02-13T15:00:00Z",
+    "overview": "overview",
+    "hasFile": true,
+    "monitored": true,
+    "absoluteEpisodeNumber": 75,
+    "sceneAbsoluteEpisodeNumber": 1,
+    "sceneEpisodeNumber": 1,
+    "sceneSeasonNumber": 4,
+    "unverifiedSceneNumbering": false,
+    "id": 10844
+  },
+  {
+    "seriesId": 160,
+    "episodeFileId": 11027,
+    "seasonNumber": 4,
+    "episodeNumber": 2,
+    "title": "episode title",
+    "airDate": "2009-02-19",
+    "airDateUtc": "2009-02-19T15:00:00Z",
+    "overview": "overview",
+    "hasFile": true,
+    "monitored": true,
+    "absoluteEpisodeNumber": 76,
+    "sceneAbsoluteEpisodeNumber": 2,
+    "sceneEpisodeNumber": 2,
+    "sceneSeasonNumber": 4,
+    "unverifiedSceneNumbering": false,
+    "id": 10845
+  }
+]

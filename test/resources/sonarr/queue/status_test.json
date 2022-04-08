@@ -1,0 +1,136 @@
+{
+  "page": 1,
+  "pageSize": 100,
+  "sortKey": "timeleft",
+  "sortDirection": "ascending",
+  "totalRecords": 46,
+  "records": [
+    {
+      "seriesId": 160,
+      "episodeId": 10844,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "size": 17268368479,
+      "title": "queue title",
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "estimatedCompletionTime": "2012-01-07T15:49:24.494275Z",
+      "status": "completed",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "One or more episodes expected in this release were not imported or missing",
+          "messages": []
+        },
+        {
+          "title": "statusMessage",
+          "messages": ["message"]
+        }
+      ],
+      "downloadId": "downloadId",
+      "protocol": "torrent",
+      "downloadClient": "client",
+      "indexer": "indexer",
+      "outputPath": "path",
+      "id": 1986632298
+    },
+    {
+      "seriesId": 160,
+      "episodeId": 10845,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "size": 17268368479,
+      "title": "queue title",
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "estimatedCompletionTime": "2012-01-07T15:49:24.49428Z",
+      "status": "completed",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "One or more episodes expected in this release were not imported or missing",
+          "messages": []
+        }
+      ],
+      "downloadId": "downloadId",
+      "protocol": "torrent",
+      "downloadClient": "client",
+      "indexer": "indexer",
+      "outputPath": "path",
+      "id": 55772889
+    },
+    {
+      "seriesId": 160,
+      "episodeId": 10846,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "size": 17268368479,
+      "title": "queue title",
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "estimatedCompletionTime": "2012-01-07T15:49:24.494285Z",
+      "status": "completed",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "One or more episodes expected in this release were not imported or missing",
+          "messages": []
+        }
+      ],
+      "downloadId": "downloadId",
+      "protocol": "torrent",
+      "downloadClient": "client",
+      "indexer": "indexer",
+      "outputPath": "path",
+      "id": 1980318582
+    }
+  ]
+}
