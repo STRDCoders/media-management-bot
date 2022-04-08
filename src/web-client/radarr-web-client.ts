@@ -28,7 +28,7 @@ export class RadarrWebClient implements MediaWebClient {
 
   async getDownloadQueue(): Promise<MediaDownloadQueueItem[]> {
     logger.debug("Fetching radarr download queue");
-    const response = await this.axiosClient.get("queue");
+    const response = await this.axiosClient.get(`queue?pageSize=${Constants.radarr.queuePageSize}`);
     return response.data.records.map(
       (queueRecord: RadarrQueueRecord) =>
         <MediaDownloadQueueItem>{

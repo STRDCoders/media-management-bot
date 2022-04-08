@@ -50,8 +50,8 @@ describe("Radarr media service", () => {
 
     useCaseTestData.forEach((useCase) => {
       it(`should call the http client with the correct url & parse the data correctly when status is ${useCase.clientStatus}_${useCase.trackedStatus}`, async () => {
-        const expectedUrl = "queue";
-        const response = TestUtils.readResourceFile("radarr/queue/status_test.json");
+        const expectedUrl = "queue?pageSize=100";
+        const response = TestUtils.readResourceFile("radarr/queue/status_test");
         response.records[0].status = useCase.clientStatus;
         response.records[0].trackedDownloadStatus = useCase.trackedStatus;
         mockHttpClientGetStub.returns(Promise.resolve({ data: response }));
