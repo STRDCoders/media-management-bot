@@ -23,7 +23,7 @@ export class Constants {
     host: process.env.SONARR_HOST!!,
     basePath: "/api/v3",
     apiKey: process.env.SONARR_API_KEY!!,
-    queuePageSize: Number.isInteger(parseInt(process.env.QUEUE_SIZE!!, 10))
+    queuePageSize: Number.isInteger(parseInt(process.env.SONARR_QUEUE_SIZE!!, 10))
       ? parseInt(process.env.QUEUE_SIZE!!, 10)
       : 100,
   });
@@ -31,7 +31,7 @@ export class Constants {
     host: process.env.RADARR_HOST!!,
     basePath: "/api/v3",
     apiKey: process.env.RADARR_API_KEY!!,
-    queuePageSize: Number.isInteger(parseInt(process.env.QUEUE_SIZE!!, 10))
+    queuePageSize: Number.isInteger(parseInt(process.env.RADARR_QUEUE_SIZE!!, 10))
       ? parseInt(process.env.QUEUE_SIZE!!, 10)
       : 100,
   });
