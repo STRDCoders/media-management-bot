@@ -176,6 +176,28 @@ describe("Bot service", () => {
             );
           })
         );
+      it("when several items in queue, should separate them with a new line", async () => {
+        const message = generateMessage("/queue", validUserId);
+        const response = TestUtils.readResourceFile("radarr/queue/status_test");
+        const [mediaRecord] = response.records;
+        mediaRecord.status = Object.values(MediaDownloadQueueItemClientStatus)[
+          Math.floor(Math.random() * Object.values(MediaDownloadQueueItemClientStatus).length)
+        ];
+        mediaRecord.title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
+        mediaRecord.trackedDownloadStatus = "ok";
+        mediaRecord.timeleft =
+          Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60) + ":" + Math.floor(Math.random() * 60);
+        response.records.push(mediaRecord);
+
+        mockHttpClientGetStub.resolves({ data: response });
+
+        await bot.handleUpdate(message);
+        const actualMessage = outgoingRequests.pop();
+        expect(actualMessage.method).to.equal("sendMessage");
+        expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
+        const expectedSingleMessage = `${mediaRecord.title} - 📥 Downloading(${mediaRecord.timeleft} remaining)`;
+        expect(actualMessage.payload.text).to.equal(`${expectedSingleMessage}\n${expectedSingleMessage}`);
+      });
     });
   });
 });
