@@ -21,5 +21,6 @@ The software requires some properties to be configured before running it:
 * `SONARR_HOST` - The host address.
 <br>If you are running the bot on the same machine as "sonarr", it will probably be something like: `http://127.0.0.1:8989/sonarr`
 * `SONARR_API_KEY` - The api of your "sonarr" service.
-* `RADARR_QUEUE_SIZE`(**Optional**) - The number of items returned from the queue request. Default of 100.
-* `SONARR_QUEUE_SIZE`(**Optional**) - The number of items returned from the queue request. Default of 100.
+### Optional
+* `RADARR_QUEUE_SIZE` - The number of items returned from the queue request. Default of 100.
+* `SONARR_QUEUE_SIZE` - The number of items returned from the queue request. Default of 100.
