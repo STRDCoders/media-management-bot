@@ -12,7 +12,7 @@
 
 ## Enviorment variables
 The software requires some properties to be configured before running it:
-* `ALLOWED_USERS` - A string of chat ids that are allowed to comunicate with the bot(can be obtained by running the software without this property and see in the logs the id of the unauthnticated user.
+* `ALLOWED_USERS` - A string of chat ids that are allowed to comunicate with the bot(can be obtained by running the software without this property and see in the logs the id of the unauthnticated user. Each user id should be separated by a comma. Ex. 11131,1234
 * `BOT_TOKEN` - The token of the bot.
 <br>To generate a new bot contact [BotFather](https://core.telegram.org/bots#6-botfather).
 * `RADARR_HOST` - The host address.
