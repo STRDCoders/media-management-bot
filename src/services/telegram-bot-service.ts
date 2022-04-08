@@ -80,8 +80,6 @@ export class TelegramBotService {
     switch (route) {
       case Routes.queue:
         return await this.handleQueueRequest(ctx, next);
-      default:
-        return;
     }
   }
 
