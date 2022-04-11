@@ -65,7 +65,7 @@ describe("Sonarr media service", () => {
         const seriesResponse = TestUtils.readResourceFile("sonarr/series");
         seriesResponse[0].id = queueResponse.records[0].seriesId;
         seriesResponse[0].title = "".padEnd(Math.floor(Math.random() * 16) + 3, "a");
-        mockHttpClientGetStub.withArgs(expectedSeriesUrl).resolves(seriesResponse);
+        mockHttpClientGetStub.withArgs(expectedSeriesUrl).resolves({ data: seriesResponse });
 
         const expectedEpisodeUrl = `episode?episodeIds=${queueResponse.records[0].episodeId}`;
         const episodeResponse = TestUtils.readResourceFile("sonarr/episode");
@@ -73,7 +73,7 @@ describe("Sonarr media service", () => {
         episodeResponse[0].seriesId = queueResponse.records[0].seriesId;
         episodeResponse[0].seasonNumber = Math.floor(Math.random() * 100);
         episodeResponse[0].episodeNumber = Math.floor(Math.random() * 100);
-        mockHttpClientGetStub.withArgs(expectedEpisodeUrl).resolves(episodeResponse);
+        mockHttpClientGetStub.withArgs(expectedEpisodeUrl).resolves({ data: episodeResponse });
 
         const queueActual = await sonarrMediaService.getDownloadQueue();
         const expectedDTO: MediaDownloadQueueItem = {
