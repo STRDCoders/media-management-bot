@@ -33,7 +33,7 @@ export class SonarrWebClient implements MediaWebClient {
     const queueResponse = await this.axiosClient.get(`queue?pageSize=${Constants.radarr.queuePageSize}`);
     const episodeIds = queueResponse.data.records.map((item: SonarrQueueRecord) => item.episodeId);
     const episodeMetadata: SonarrEpisodeRecord[] = await this.getEpisodesMetadata(episodeIds);
-    // convert seriesList from array of objects to object of objects where the key is the id of the series and the value is the object itself
+    // convert seriesList from array of objects to dict of id->value
     const seriesMap: { [key: number]: SonarrSeriesRecord } = seriesList.reduce(
       (acc: { [key: number]: SonarrSeriesRecord }, series: SonarrSeriesRecord) => {
         acc[series.id] = series;
@@ -48,8 +48,6 @@ export class SonarrWebClient implements MediaWebClient {
       },
       {}
     );
-    console.log(seriesMap);
-    console.log(episodeMap);
 
     return queueResponse.data.records.map(
       (queueRecord: SonarrQueueRecord) =>
