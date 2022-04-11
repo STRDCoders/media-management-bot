@@ -31,9 +31,8 @@ export class SonarrWebClient implements MediaWebClient {
 
     const seriesList: SonarrSeriesRecord[] = await this.getAllSeries();
     const queueResponse = await this.axiosClient.get(`queue?pageSize=${Constants.radarr.queuePageSize}`);
-    const episodeMetadata: SonarrEpisodeRecord[] = await this.getEpisodesMetadata(
-      queueResponse.data.records.map((item: SonarrQueueRecord) => item.episodeId)
-    );
+    const episodeIds = queueResponse.data.records.map((item: SonarrQueueRecord) => item.episodeId);
+    const episodeMetadata: SonarrEpisodeRecord[] = await this.getEpisodesMetadata(episodeIds);
     // convert seriesList from array of objects to object of objects where the key is the id of the series and the value is the object itself
     const seriesMap: { [key: number]: SonarrSeriesRecord } = seriesList.reduce(
       (acc: { [key: number]: SonarrSeriesRecord }, series: SonarrSeriesRecord) => {
@@ -66,7 +65,7 @@ export class SonarrWebClient implements MediaWebClient {
   }
 
   async getEpisodesMetadata(episodeIds: number[]): Promise<SonarrEpisodeRecord[]> {
-    logger.debug("Fetching sonarr download queue");
+    logger.debug("Fetching sonarr download queue for episodes: ", episodeIds);
     const [firstEpisodeId, ...restEpisodeIds] = episodeIds;
     const response = await this.axiosClient.get(
       `episode?episodeIds=${firstEpisodeId}${restEpisodeIds.map((id) => `&${id}`).join("")}`
