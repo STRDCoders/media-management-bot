@@ -34,9 +34,23 @@ export class SonarrWebClient implements MediaWebClient {
     const episodeMetadata: SonarrEpisodeRecord[] = await this.getEpisodesMetadata(
       queueResponse.data.records.map((item: SonarrQueueRecord) => item.episodeId)
     );
-
-    const seriesDict = Object.assign({}, ...seriesList.map((x) => ({ [x.id]: x })));
-    const episodeDict = Object.assign({}, ...episodeMetadata.map((x) => ({ [x.id]: x })));
+    // convert seriesList from array of objects to object of objects where the key is the id of the series and the value is the object itself
+    const seriesMap: { [key: number]: SonarrSeriesRecord } = seriesList.reduce(
+      (acc: { [key: number]: SonarrSeriesRecord }, series: SonarrSeriesRecord) => {
+        acc[series.id] = series;
+        return acc;
+      },
+      {}
+    );
+    const episodeMap: { [key: number]: SonarrEpisodeRecord } = episodeMetadata.reduce(
+      (acc: { [key: number]: SonarrEpisodeRecord }, episode: SonarrEpisodeRecord) => {
+        acc[episode.id] = episode;
+        return acc;
+      },
+      {}
+    );
+    // const seriesDict = Object.assign({}, ...seriesList.map((x) => ({ [x.id]: x })));
+    // const episodeDict = Object.assign({}, ...episodeMetadata.map((x) => ({ [x.id]: x })));
 
     return queueResponse.data.records.map(
       (queueRecord: SonarrQueueRecord) =>
@@ -44,9 +58,9 @@ export class SonarrWebClient implements MediaWebClient {
           clientStatus: queueRecord.status,
           trackedStatus: queueRecord.trackedDownloadStatus,
           estimatedCompletionTime: queueRecord.timeleft,
-          name: `${seriesDict[queueRecord.seriesId].title} - Season: ${
-            episodeDict[queueRecord.episodeId].seasonNumber
-          } Episode: ${episodeDict[queueRecord.episodeId].episodeNumber}`,
+          name: `${seriesMap[queueRecord.seriesId].title} - Season: ${
+            episodeMap[queueRecord.episodeId].seasonNumber
+          } Episode: ${episodeMap[queueRecord.episodeId].episodeNumber}`,
         }
     );
   }
@@ -77,7 +91,7 @@ interface SonarrQueueRecord {
 interface SonarrEpisodeRecord {
   id: number;
   seasonNumber: number;
-  sceneEpisodeNumber: number;
+  episodeNumber: number;
 }
 
 interface SonarrSeriesRecord {
