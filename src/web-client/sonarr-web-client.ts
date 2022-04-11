@@ -49,6 +49,8 @@ export class SonarrWebClient implements MediaWebClient {
       },
       {}
     );
+    console.log(seriesMap);
+    console.log(episodeMap);
 
     return queueResponse.data.records.map(
       (queueRecord: SonarrQueueRecord) =>
