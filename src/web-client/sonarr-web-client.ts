@@ -29,8 +29,11 @@ export class SonarrWebClient implements MediaWebClient {
   async getDownloadQueue(): Promise<MediaDownloadQueueItem[]> {
     logger.debug("Fetching sonarr download queue");
 
-    const seriesList: SonarrSeriesRecord[] = await this.getAllSeries();
     const queueResponse = await this.axiosClient.get(`queue?pageSize=${Constants.radarr.queuePageSize}`);
+    if (queueResponse.data.records.length === 0) {
+      return [];
+    }
+    const seriesList: SonarrSeriesRecord[] = await this.getAllSeries();
     const episodeIds = queueResponse.data.records.map((item: SonarrQueueRecord) => item.episodeId);
     const episodeMetadata: SonarrEpisodeRecord[] = await this.getEpisodesMetadata(episodeIds);
     // convert seriesList from array of objects to dict of id->value
