@@ -73,7 +73,7 @@ export class TelegramBotService {
   }
 
   private handleError = async (errorHandler: BotError<BasicContext>) => {
-    logger.error(`Error occurred: ${errorHandler.error}`);
+    logger.error(`Error occurred: ${errorHandler.error}`, errorHandler.error);
     await errorHandler.ctx.reply(Constants.bot.responses.error);
   };
 
