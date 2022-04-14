@@ -54,7 +54,7 @@ export class TelegramBotService {
         return await next();
       }
     }
-    logger.error(`User ${ctx.from?.id} is not authorized`);
+    logger.error(`User ${ctx.chat?.id} is not authorized`);
   }
 
   private initBotMiddleware() {
