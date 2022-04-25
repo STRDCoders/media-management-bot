@@ -84,8 +84,8 @@ describe("Sonarr media service", () => {
         };
 
         expect(mockHttpClientGetStub).to.have.been.calledThrice;
-        expect(mockHttpClientGetStub.firstCall).to.have.been.calledWith(expectedSeriesUrl);
-        expect(mockHttpClientGetStub.secondCall).to.have.been.calledWith(expectedQueueUrl);
+        expect(mockHttpClientGetStub.firstCall).to.have.been.calledWith(expectedQueueUrl);
+        expect(mockHttpClientGetStub.secondCall).to.have.been.calledWith(expectedSeriesUrl);
         expect(mockHttpClientGetStub.thirdCall).to.have.been.calledWith(expectedEpisodeUrl);
         expect(queueActual).to.deep.equal([expectedDTO]);
       });
