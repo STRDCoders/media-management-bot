@@ -91,7 +91,7 @@ export class TelegramBotService {
       for (const item of media) {
         let message: string = Constants.bot.responses.queue.description(item.name);
         if (item.clientStatus === MediaDownloadQueueItemClientStatus.delay) {
-          message += Constants.bot.responses.queue.delay;
+          message += Constants.bot.responses.queue.delay(item.estimatedCompletionTime);
         } else {
           message +=
             item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok

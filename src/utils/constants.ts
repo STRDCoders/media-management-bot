@@ -16,7 +16,7 @@ export class Constants {
         description: (title: string) => `${title} - `,
         warning: "⚠️ Contact admin",
         downloading: (remainingTime: string) => `📥 Downloading(${remainingTime} remaining)`,
-        delay: "⏱️ Waiting for better quality(~12 hours)",
+        delay: (remainingTime: string) => `⏳️Waiting for better quality(${remainingTime} remaining)`,
       }),
     }),
   });

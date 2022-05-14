@@ -109,7 +109,7 @@ describe("Bot service", () => {
 
     describe("/queue", () => {
       const buildQueueItemsResponse = (
-        trackedStatus: string = "ok",
+        trackedStatus: string | undefined = "ok",
         clientStatus: MediaDownloadQueueItemClientStatus = Object.values(MediaDownloadQueueItemClientStatus)[
           Math.floor(Math.random() * Object.values(MediaDownloadQueueItemClientStatus).length)
         ]
@@ -184,6 +184,22 @@ describe("Bot service", () => {
               );
           })
         );
+
+      it("client status is delay, should send the correct message", async () => {
+        const message = generateMessage("/queue", validUserId);
+        const response = buildQueueItemsResponse(undefined, MediaDownloadQueueItemClientStatus.delay);
+        const [mediaRecord] = response.records;
+
+        mockHttpClientGetStub.resolves({ data: response });
+
+        await bot.handleUpdate(message);
+        const actualMessage = outgoingRequests.pop();
+        expect(actualMessage.method).to.equal("sendMessage");
+        expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
+        expect(actualMessage.payload.text).to.equal(
+          `${mediaRecord.title} - ⏳️Waiting for better quality(${mediaRecord.timeleft} remaining)`
+        );
+      });
 
       it("when several items in queue, should separate them with a new line", async () => {
         const message = generateMessage("/queue", validUserId);
