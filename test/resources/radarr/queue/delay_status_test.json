@@ -1,0 +1,42 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "timeleft",
+  "sortDirection": "ascending",
+  "totalRecords": 2,
+  "records": [
+    {
+      "movieId": 1,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "TEST_NAME",
+          "source": "SOURCE",
+          "resolution": 1,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [],
+      "size": 5712306688,
+      "title": "TITLE.TITLE",
+      "sizeleft": 5712306688,
+      "timeleft": "10:32:39.3888440",
+      "estimatedCompletionTime": "2013-01-12T19:54:30Z",
+      "status": "delay",
+      "protocol": "protocol",
+      "indexer": "iondexer",
+      "id": 123
+    }
+  ]
+}
