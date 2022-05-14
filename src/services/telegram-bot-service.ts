@@ -3,7 +3,7 @@ import { LoggerFactory } from "../utils/logger-factory";
 import { Constants } from "../utils/constants";
 import { Bot, BotError, Context, session, SessionFlavor } from "grammy";
 import { RadarrMediaService } from "./radarr-media-service";
-import { MediaDownloadQueueItemTrackedStatus } from "./media-service";
+import { MediaDownloadQueueItemClientStatus, MediaDownloadQueueItemTrackedStatus } from "./media-service";
 
 const logger: Logger = LoggerFactory.getLogger("bot-service");
 
@@ -89,11 +89,15 @@ export class TelegramBotService {
     if (media.length > 0) {
       const messages: string[] = [];
       for (const item of media) {
-        const message: string = `${Constants.bot.responses.queue.description(item.name)}${
-          item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok
-            ? Constants.bot.responses.queue.warning
-            : Constants.bot.responses.queue.downloading(item.estimatedCompletionTime)
-        }`;
+        let message: string = Constants.bot.responses.queue.description(item.name);
+        if (item.clientStatus === MediaDownloadQueueItemClientStatus.delay) {
+          message += Constants.bot.responses.queue.delay(item.estimatedCompletionTime);
+        } else {
+          message +=
+            item.trackedStatus !== MediaDownloadQueueItemTrackedStatus.ok
+              ? Constants.bot.responses.queue.warning
+              : Constants.bot.responses.queue.downloading(item.estimatedCompletionTime);
+        }
         messages.push(message);
       }
       await ctx.reply(messages.join("\n"));
