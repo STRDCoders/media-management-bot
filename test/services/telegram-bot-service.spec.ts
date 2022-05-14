@@ -197,7 +197,7 @@ describe("Bot service", () => {
         expect(actualMessage.method).to.equal("sendMessage");
         expect(actualMessage.payload.chat_id).to.equal(message.message?.chat.id);
         expect(actualMessage.payload.text).to.equal(
-          `${mediaRecord.title} - ⏳️ Waiting for better quality(${mediaRecord.timeleft} remaining)`
+          `${mediaRecord.title} - ⏳️ Waiting for better quality\n(${mediaRecord.timeleft} remaining)`
         );
       });
 
