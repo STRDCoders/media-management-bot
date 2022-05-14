@@ -42,9 +42,12 @@ describe("Radarr media service", () => {
   describe("getDownloadQueue", () => {
     const useCaseTestData: Array<UseCaseTest> = Object.values(MediaDownloadQueueItemTrackedStatus)
       .map((trackedStatus: MediaDownloadQueueItemTrackedStatus) =>
-        Object.values(MediaDownloadQueueItemClientStatus).map(
-          (clientStatus: MediaDownloadQueueItemClientStatus) => <UseCaseTest>{ trackedStatus, clientStatus }
-        )
+        Object.values(MediaDownloadQueueItemClientStatus)
+          .filter(
+            (clientStatus: MediaDownloadQueueItemClientStatus) =>
+              clientStatus !== MediaDownloadQueueItemClientStatus.delay
+          )
+          .map((clientStatus: MediaDownloadQueueItemClientStatus) => <UseCaseTest>{ trackedStatus, clientStatus })
       )
       .reduce((a, b) => a.concat(b));
 
@@ -66,6 +69,22 @@ describe("Radarr media service", () => {
         expect(mockHttpClientGetStub).to.have.been.calledOnceWithExactly(expectedUrl);
         expect(queueActual).to.deep.equal([expectedDTO]);
       });
+    });
+
+    it("should call the http client with the correct url & parse the data correctly when status is delay", async () => {
+      const expectedUrl = "queue?pageSize=100";
+      const response = TestUtils.readResourceFile("radarr/queue/delay_status_test");
+      mockHttpClientGetStub.returns(Promise.resolve({ data: response }));
+
+      const queueActual = await radarrMediaService.getDownloadQueue();
+      const expectedDTO: MediaDownloadQueueItem = {
+        name: response.records[0].title,
+        trackedStatus: undefined,
+        clientStatus: MediaDownloadQueueItemClientStatus.delay,
+        estimatedCompletionTime: response.records[0].timeleft,
+      };
+      expect(mockHttpClientGetStub).to.have.been.calledOnceWithExactly(expectedUrl);
+      expect(queueActual).to.deep.equal([expectedDTO]);
     });
 
     interface UseCaseTest {
