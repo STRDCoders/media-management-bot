@@ -4,6 +4,7 @@ import { Constants } from "../utils/constants";
 import { Bot, BotError, Context, session, SessionFlavor } from "grammy";
 import { RadarrMediaService } from "./radarr-media-service";
 import { MediaDownloadQueueItemClientStatus, MediaDownloadQueueItemTrackedStatus } from "./media-service";
+import { SonarrMediaService } from "./sonarr-media-service";
 
 const logger: Logger = LoggerFactory.getLogger("bot-service");
 
@@ -28,6 +29,7 @@ function initial(): SessionData {
 export class TelegramBotService {
   constructor(
     private radarrMediaService: RadarrMediaService,
+    private sonarrMediaService: SonarrMediaService,
     private bot: Bot<BasicContext> = new Bot(Constants.botToken)
   ) {
     this.initBotMiddleware();
@@ -52,7 +54,7 @@ export class TelegramBotService {
         return await next();
       }
     }
-    logger.error(`User ${ctx.from?.id} is not authorized`);
+    logger.error(`User ${ctx.chat?.id} is not authorized`);
   }
 
   private initBotMiddleware() {
@@ -71,7 +73,7 @@ export class TelegramBotService {
   }
 
   private handleError = async (errorHandler: BotError<BasicContext>) => {
-    logger.error(`Error occurred: ${errorHandler.error}`);
+    logger.error(`Error occurred: ${errorHandler.error}`, errorHandler.error);
     await errorHandler.ctx.reply(Constants.bot.responses.error);
   };
 
@@ -85,10 +87,13 @@ export class TelegramBotService {
 
   private async handleQueueRequest(ctx: BasicContext, next: Function) {
     logger.info(`User ${ctx.chat!!.id} requested the download queue`);
-    const media = await this.radarrMediaService.getDownloadQueue();
-    if (media.length > 0) {
+    const radarrQueue = await this.radarrMediaService.getDownloadQueue();
+    const sonarrQueue = await this.sonarrMediaService.getDownloadQueue();
+    const combinedQueue = radarrQueue.concat(sonarrQueue);
+
+    if (combinedQueue.length > 0) {
       const messages: string[] = [];
-      for (const item of media) {
+      for (const item of combinedQueue) {
         let message: string = Constants.bot.responses.queue.description(item.name);
         if (item.clientStatus === MediaDownloadQueueItemClientStatus.delay) {
           message += Constants.bot.responses.queue.delay(item.estimatedCompletionTime);

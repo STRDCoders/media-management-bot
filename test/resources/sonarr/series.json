@@ -1,0 +1,102 @@
+[
+  {
+    "title": "title",
+    "alternateTitles": [],
+    "sortTitle": "sort title",
+    "status": "ended",
+    "ended": true,
+    "overview": "overview",
+    "previousAiring": "2004-02-10T20:00:00Z",
+    "network": "network",
+    "airTime": "21:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/sonarr/MediaCover/1/banner.jpg?lastWrite=637774236902993096",
+        "remoteUrl": "remoteUrl"
+      }
+    ],
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 7,
+          "sizeOnDisk": 0,
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2004-02-10T20:00:00Z",
+          "episodeFileCount": 2,
+          "episodeCount": 2,
+          "totalEpisodeCount": 2,
+          "sizeOnDisk": 5184142418,
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2004-02-10T20:00:00Z",
+          "episodeFileCount": 2,
+          "episodeCount": 2,
+          "totalEpisodeCount": 2,
+          "sizeOnDisk": 4221419020,
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 3,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2004-02-10T20:00:00Z",
+          "episodeFileCount": 2,
+          "episodeCount": 2,
+          "totalEpisodeCount": 2,
+          "sizeOnDisk": 4698415860,
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2004,
+    "path": "path",
+    "qualityProfileId": 4,
+    "languageProfileId": 1,
+    "seasonFolder": true,
+    "monitored": true,
+    "useSceneNumbering": false,
+    "runtime": 45,
+    "tvdbId": 11111,
+    "tvRageId": 11112,
+    "tvMazeId": 11113,
+    "firstAired": "2004-02-10T20:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "cleantitle",
+    "imdbId": "tt11111",
+    "titleSlug": "title-slug",
+    "rootFolderPath": "path",
+    "genres": ["Action", "Comedy", "Crime", "Mystery", "Thriller"],
+    "tags": [],
+    "added": "2019-02-19T10:53:51.519704Z",
+    "ratings": {
+      "votes": 248,
+      "value": 7.8
+    },
+    "statistics": {
+      "seasonCount": 3,
+      "episodeFileCount": 6,
+      "episodeCount": 6,
+      "totalEpisodeCount": 13,
+      "sizeOnDisk": 14103977298,
+      "percentOfEpisodes": 100
+    },
+    "id": 1
+  }
+]

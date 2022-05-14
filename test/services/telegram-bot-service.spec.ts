@@ -16,6 +16,7 @@ import {
   MediaDownloadQueueItemClientStatus,
   MediaDownloadQueueItemTrackedStatus,
 } from "../../src/services/media-service";
+import { SonarrMediaService } from "../../src/services/sonarr-media-service";
 
 chai.use(chaiAsPromised);
 chai.use(require("sinon-chai"));
@@ -27,6 +28,7 @@ let outgoingRequests: any = [];
 describe("Bot service", () => {
   let bot: Bot<BasicContext>;
   let radarrMediaService: RadarrMediaService;
+  let sonarrMediaService: SonarrMediaService;
   let botService: TelegramBotService;
   let sandbox: SinonSandbox;
   let mockHttpClient;
@@ -80,7 +82,8 @@ describe("Bot service", () => {
     mockHttpClientGetStub = sandbox.stub(mockHttpClient, "get");
 
     radarrMediaService = new RadarrMediaService();
-    botService = new TelegramBotService(radarrMediaService, bot);
+    sonarrMediaService = new SonarrMediaService();
+    botService = new TelegramBotService(radarrMediaService, sonarrMediaService, bot);
     outgoingRequests = [];
   });
 
