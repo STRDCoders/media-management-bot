@@ -35,7 +35,7 @@
       "estimatedCompletionTime": "2013-01-12T19:54:30Z",
       "status": "delay",
       "protocol": "protocol",
-      "indexer": "iondexer",
+      "indexer": "indexer",
       "id": 123
     }
   ]
